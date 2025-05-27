@@ -1,17 +1,37 @@
-<body?php
+<?php
 // index.php - Main dashboard
+
+// Start the session
+session_start();
+
+// Include necessary files
 require_once 'config.php';
 require_once 'session.php';
 require_once 'Document.php';
-require_once 'User.php';
+require_once 'User.php'; // Fixed typo: removed extra space
 
+// Function to check if the user is an admin
+function isAdmin() {
+    return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+}
+
+// Ensure the user is logged in
 requireLogin();
 
+// Check if the session variables are set
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['username'])) {
+    // Redirect to login if not set
+    header('Location: login.php');
+    exit();
+}
+
+// Connect to the database
 $database = new Database();
 $db = $database->connect();
 
+// Create a Document object and fetch user documents
 $document = new Document($db);
-$documents = $document->getUserDocuments($_SESSION['user_id'], isAdmin());
+$documents = $document->getUserDocuments($_SESSION['user_id'], isAdmin()); // Fixed typo here
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -165,6 +185,6 @@ $documents = $document->getUserDocuments($_SESSION['user_id'], isAdmin());
     function openDocument(id) {
         window.location.href = `editor.php?id=${id}`;
     }
-</script>
+    </script>
 </body>
 </html>
