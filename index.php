@@ -8,7 +8,7 @@ session_start();
 require_once 'config.php';
 require_once 'session.php';
 require_once 'Document.php';
-require_once 'User.php'; // Fixed typo: removed extra space
+require_once 'User.php';
 
 // Function to check if the user is an admin
 function isAdmin() {
@@ -31,7 +31,7 @@ $db = $database->connect();
 
 // Create a Document object and fetch user documents
 $document = new Document($db);
-$documents = $document->getUserDocuments($_SESSION['user_id'], isAdmin()); // Fixed typo here
+$documents = $document->getUserDocuments($_SESSION['user_id'], isAdmin());
 ?>
 <!DOCTYPE html>
 <html lang="en">
